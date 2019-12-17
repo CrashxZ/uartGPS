@@ -18,7 +18,7 @@ class gpsPublisher(object):
         #Publisher to send delta values to the drone for flying
         self.setpoint = rospy.Publisher('/gpsTarget', String, queue_size=0)
         self.gps = serial.Serial("/dev/ttyTHS0", baudrate=57600, timeout=1)
-
+	self.gpsPublish()
 
         
     # Subscriber callback to listen to rc channels. add the RC Subscriber as required.
@@ -31,10 +31,10 @@ class gpsPublisher(object):
         
     #Function to read the JSON information from file (Previously saved by local_path packege)
     def gpsPublish(self):
-        while gps.is_open:
-                position = gps.readline()
+        while self.gps.is_open:
+                position = self.gps.readline()
                 rospy.loginfo(position)
-                self.gps.publish(position)
+                self.setpoint.publish(position)
 
    
 
